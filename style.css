@@ -1,0 +1,492 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f0f2f5;
+    font-family: Arial, sans-serif;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Header */
+.top-header {
+    height: 60px;
+    background-color: #111b21;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+}
+
+.search-container input {
+    padding: 8px 15px;
+    width: 280px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}
+
+.profile-menu-wrapper {
+    position: relative;
+}
+
+.profile-icon-btn {
+    background: #00a884;
+    border: none;
+    font-size: 20px;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+}
+
+.dropdown-content {
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    overflow: hidden;
+    width: 200px;
+    z-index: 100;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Layout Main */
+.main-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar Left & Right */
+.sidebar-left, .sidebar-right {
+    width: 250px;
+    background-color: #202c33;
+    color: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-left ul, .sidebar-right ul {
+    list-style: none;
+    margin-top: 15px;
+}
+
+.sidebar-left li, .sidebar-right li {
+    padding: 10px;
+    background: #111b21;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.sidebar-left li:hover, .sidebar-right li:hover {
+    background: #2a3942;
+}
+
+.logo-box {
+    margin-top: auto;
+    text-align: center;
+}
+
+#family-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00a884;
+}
+
+.upload-btn {
+    display: block;
+    font-size: 12px;
+    color: #00a884;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+/* Chat Main Area */
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #efeae2;
+}
+
+.chat-header {
+    background-color: #f0f2f5;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.call-btn {
+    padding: 8px 14px;
+    background-color: #0084ff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.call-btn.video {
+    background-color: #25d366;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-behavior: smooth;
+}
+
+.message {
+    max-width: 60%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.message.outgoing {
+    background-color: #d9fdd3;
+    align-self: flex-end;
+}
+
+/* Chat Input Layout */
+.chat-input-area {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px 25px 12px;
+    background-color: #f0f2f5;
+    gap: 10px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    background-color: #ffffff;
+}
+
+.chat-input-area button {
+    padding: 10px 20px;
+    background-color: #00a884;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Modal Popup Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 360px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #555;
+}
+
+/* Profile Picture Box Modal Keessatti */
+.profile-pic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#profile-img-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00a884;
+}
+
+/* Forms Modal Keessaa */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.auth-form h3 {
+    text-align: center;
+    color: #111b21;
+    margin-bottom: 5px;
+}
+
+.auth-form input, 
+.auth-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+}
+
+.phone-input-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 4px 8px;
+    gap: 6px;
+    background-color: #fff;
+}
+
+#country-code-input {
+    width: 50px;
+    border: none !important;
+    outline: none !important;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 0 !important;
+}
+
+#country-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #00a884;
+    white-space: nowrap;
+    padding-right: 6px;
+    border-right: 1px solid #ddd;
+}
+
+#modal-phone {
+    border: none !important;
+    outline: none !important;
+    flex: 1;
+    padding: 8px 4px !important;
+    width: 100%;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #00a884;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.submit-btn:hover {
+    background-color: #008f70;
+}
+
+.switch-text, .form-links {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.switch-text a, .form-links a {
+    color: #00a884;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.info-text {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.call-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.icon-btn {
+    background: #00a884;
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.icon-btn:hover {
+    background: #008f70;
+}
+
+/* Mobile Toggle Button */
+.menu-toggle-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Call Modal Styling */
+.call-modal-content {
+    text-align: center;
+    background-color: #111b21;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 300px;
+    margin: auto;
+}
+
+.call-avatar {
+    font-size: 60px;
+    background: #00a884;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+}
+
+.end-call-btn {
+    background-color: #ea4335;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.end-call-btn:hover {
+    background-color: #dc3545;
+}
+
+/* Attachment Button */
+.attachment-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 8px;
+    color: #54656f;
+}
+
+.attachment-btn:hover {
+    color: #00a884;
+}
+
+/* Media Chat Messages Styling */
+.chat-media-img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    margin-top: 5px;
+    display: block;
+}
+
+.chat-media-audio {
+    max-width: 220px;
+    margin-top: 5px;
+}
+
+/* Responsive Breakpoint Mobile */
+@media screen and (max-width: 768px) {
+    .menu-toggle-btn {
+        display: block;
+    }
+
+    .main-layout {
+        display: block;
+        position: relative;
+    }
+
+    .sidebar-left {
+        position: fixed;
+        top: 60px;
+        left: -260px;
+        width: 240px;
+        height: calc(100vh - 60px);
+        z-index: 1000;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+    }
+
+    .sidebar-left.open {
+        left: 0;
+    }
+
+    .sidebar-right {
+        display: none;
+    }
+
+    .chat-area {
+        width: 100%;
+        height: calc(100vh - 60px);
+    }
+
+    .chat-input-area {
+        padding-bottom: 28px;
+    }
+}

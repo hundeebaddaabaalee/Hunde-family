@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appilikeeshiinii Walqunnamtii Maatii</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Gubbaa: Search Bar & Profile Dropdown -->
+    <header class="top-header">
+        <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Maqaa ykn lakkoofsa barbaadi..." onkeyup="searchContacts()">
+        </div>
+        <div class="profile-menu-wrapper">
+            <button class="profile-icon-btn" onclick="toggleProfileMenu()">👤</button>
+            
+            <!-- Profile Dropdown -->
+            <div id="profile-dropdown" class="dropdown-content hidden">
+                <a href="#" id="menu-signup" onclick="openAuthModal('signup')">Sign-up (Account Banadhu)</a>
+                <a href="#" id="menu-login" onclick="openAuthModal('login')">Login (Seensa)</a>
+                <a href="#" id="menu-profile" class="hidden" onclick="openProfileModal()">Profile Settings</a>
+                <a href="#" id="menu-logout" class="hidden" onclick="handleLogout()">Logout (Ba'i)</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Main Layout -->
+    <div class="main-layout">
+        
+        <!-- Sidebar Bitaa: Navigation & Settings -->
+        <aside class="sidebar-left">
+            <h3>Navigaashinii</h3>
+            <ul>
+                <li onclick="filterView('private')">👤 Dhuunfaatti Qunnamuu</li>
+                <li onclick="filterView('family')">👨‍👩‍👧‍👦 Maatii Settings</li>
+                <li onclick="filterView('community')">🌐 Community & Meeting</li>
+            </ul>
+            <div class="logo-box">
+                <img id="family-logo" src="family_logo.webp" alt="Logo">
+                <input type="file" id="logo-upload" accept="image/*" hidden>
+                <label for="logo-upload" class="upload-btn">Logo Jijjiiri</label>
+            </div>
+        </aside>
+
+        <!-- Kutaa Chat Area (Gidduu) -->
+        <main class="chat-area">
+            <div class="chat-header">
+                <div>
+                    <h3 id="current-chat-title">Maatii Keenya</h3>
+                    <span id="user-status">Online</span>
+                </div>
+                
+                <div id="call-actions" class="call-actions hidden">
+                    <button onclick="startCall('voice')" class="icon-btn" title="Voice Call">📞</button>
+                    <button onclick="startCall('video')" class="icon-btn" title="Video Call">📹</button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="message incoming">
+                    <p>Baga nagaamaan dhuftan! Akkam jirtu maatii?</p>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <!-- File Input Dhokataa -->
+                <input type="file" id="media-input" accept="image/*,audio/*" class="hidden" onchange="handleMediaUpload(event)">
+                
+                <!-- Button Attachment (📎) -->
+                <button class="attachment-btn" onclick="document.getElementById('media-input').click()">📎</button>
+                
+                <!-- Input Barreeffamaa -->
+                <input type="text" id="message-input" placeholder="Ergaa keessan barreessaa...">
+                
+                <!-- Button Ergi -->
+                <button onclick="sendMessage()" class="send-btn">Ergi</button>
+            </div>
+        </main>
+
+        <!-- Sidebar Mirgaa: Tarree Maqaa fi Lakkoofsa Namootaa -->
+        <aside class="sidebar-right">
+            <h3>Tarree Maatii fi Hiriyoota</h3>
+            <ul id="contacts-ul" class="contacts-list">
+                <li onclick="selectContact('Abbaa', '+251911111111')">
+                    <strong>Abbaa</strong><br><small>+251911111111</small>
+                </li>
+                <li onclick="selectContact('Haadha', '+251922222222')">
+                    <strong>Haadha</strong><br><small>+251922222222</small>
+                </li>
+                <li onclick="selectContact('Obboleessa', '+251933333333')">
+                    <strong>Obboleessa</strong><br><small>+251933333333</small>
+                </li>
+            </ul>
+        </aside>
+
+    </div>
+
+    <!-- Modal 1: Auth Single Popup Box (Signup / Login / Recovery) -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+
+            <!-- 1. SIGN-UP FORM -->
+            <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+                <h3>Sign-Up (Account Banadhu)</h3>
+                
+                <input type="text" id="signupName" placeholder="Maqaa Guutuu" required />
+                <input type="email" id="signupEmail" placeholder="Imeela" required />
+
+                <div class="phone-input-box">
+                    <input type="text" id="country-code-input" placeholder="+254" value="+254" oninput="detectCountry()">
+                    <span id="country-name">🇰🇪 Kenya</span>
+                    <input type="tel" id="modal-phone" placeholder="712345678" required>
+                </div>
+
+                <input type="password" id="signupPassword" placeholder="Password" required />
+
+                <button type="submit" class="submit-btn">Account Banadhu</button>
+                <p class="switch-text">Account qabduu? <a href="#" onclick="showForm('loginForm')">Login Seenii</a></p>
+            </form>
+
+            <!-- 2. LOGIN FORM -->
+            <form id="loginForm" class="auth-form hidden" onsubmit="handleLogin(event)">
+                <h3>Login (Seensa)</h3>
+                
+                <input type="text" id="loginUsername" placeholder="Username ykn Imeela" required />
+                <input type="password" id="loginPassword" placeholder="Password" required />
+
+                <div class="form-links">
+                    <a href="#" onclick="showForm('forgotForm')">Password irraanfattanii?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Seenii</button>
+                <p class="switch-text">Account hin qabduu? <a href="#" onclick="showForm('signupForm')">Sign-Up Galmaa'aa</a></p>
+            </form>
+
+            <!-- 3. FORGOT / RECOVERY FORM -->
+            <form id="forgotForm" class="auth-form hidden" onsubmit="handleRecovery(event)">
+                <h3>Account Deebisi (Recovery)</h3>
+                <p class="info-text">Koodiin eegumsaa (Verification Code) akka isiniif ergamuu filadhaa:</p>
+                
+                <select id="recoveryMethod" onchange="toggleRecoveryInput()">
+                    <option value="email">Imeela (Gmail) irratti</option>
+                    <option value="phone">Lakkoofsa Bilbilaa irratti</option>
+                </select>
+
+                <input type="email" id="recoveryEmail" placeholder="Imeela keessan galchaa" required />
+                <input type="tel" id="recoveryPhone" placeholder="Lakkoofsa Bilbilaa galchaa" class="hidden" />
+
+                <button type="submit" class="submit-btn">Koodii Ergi (Send Code)</button>
+                <p class="switch-text"><a href="#" onclick="showForm('loginForm')">Gara Login Deebi'i</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: PROFILE SETTINGS MODAL -->
+    <div id="profile-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+            <h3>Profile Settings</h3>
+            <form id="profileForm" onsubmit="handleUpdateProfile(event)">
+                <div class="profile-pic-container">
+                    <img id="profile-img-preview" src="default_avatar.png" alt="Profile Picture" style="width: 80px; height: 80px; border-radius: 50%;">
+                    <input type="file" id="profile-pic-input" accept="image/*" onchange="previewProfilePic(event)">
+                </div>
+                
+                <label>Maqaa Guutuu:</label>
+                <input type="text" id="profileName" required />
+
+                <label>Imeela:</label>
+                <input type="email" id="profileEmail" readonly style="background-color: #eee;" />
+
+                <label>Password Haaraa (Yoo jijjiiruu barbaaddan):</label>
+                <input type="password" id="profilePassword" placeholder="Password haaraa..." />
+
+                <button type="submit" class="submit-btn">Oolchi (Save Changes)</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Voice/Video Call Modal -->
+    <div id="call-modal" class="modal hidden">
+        <div class="modal-content call-modal-content">
+            <div class="call-avatar">👤</div>
+            <h3 id="call-user-name">Maatii Keenya</h3>
+            <p id="call-status">Calling...</p>
+            <div class="call-actions-btns">
+                <button class="call-btn end-call-btn" onclick="closeCallModal()">📵 End Call</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Library Socket.io Client CDN (Tolaa & Salphaa) -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
