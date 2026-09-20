@@ -8,7 +8,7 @@ function saveUsersDB(users) {
 }
 
 // Socket.io Connection (Render Backend URL Kee Asitti Galchi)
-const socket = io('https://your-render-app-name.onrender.com');
+const socket = io('https://hunde-family.onrender.com');
 
 // 1. SIDEBAR TOGGLE GOCHUU (MOBILE)
 function toggleSidebar() {
