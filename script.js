@@ -329,3 +329,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateProfileMenu();
 });
+
+// Server Render keetiin wal-qabsiisi
+const socket = io('https://hunde-family.onrender.com');
+
+// 1. Account Haaraa Uumuu (Sign Up / Login)
+function handleSignup(event) {
+  event.preventDefault();
+  const name = document.getElementById('signupName').value;
+  const phone = document.getElementById('signupPhone').value;
+  const password = document.getElementById('signupPassword').value;
+
+  const newUser = { name, phone, password };
+
+  // Local storage fi Server-tti erguu
+  localStorage.setItem('currentUser', JSON.stringify(newUser));
+  socket.emit('user_joined', newUser);
+
+  alert("Account dhugaan uumameera!");
+  closeAuthModal();
+}
+
+// 2. Namoota Online Jiran Bilbila Biraa Irraa Argachuu
+socket.on('update_user_list', (onlineUsers) => {
+  const contactList = document.getElementById('contact-list');
+  if (!contactList) return;
+  
+  contactList.innerHTML = '';
+  onlineUsers.forEach(user => {
+    contactList.innerHTML += `
+      <div class="user-item" onclick="startPrivateChat('${user.phone}')">
+        <p><strong>${user.name}</strong> (${user.phone})</p>
+      </div>
+    `;
+  });
+});
+
+// 3. Private Chat Real-Time Erguu
+function sendMessage() {
+  const messageInput = document.getElementById('messageInput');
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+  if (!messageInput.value) return;
+
+  const msgData = {
+    sender: currentUser.phone,
+    text: messageInput.value,
+    time: new Date().toLocaleTimeString()
+  };
+
+  socket.emit('send_private_message', msgData);
+  messageInput.value = '';
+}
+
+socket.on('receive_private_message', (data) => {
+  displayMessage(data);
+});
+                                            
